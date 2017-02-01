@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  <title>three.js periodic table for Firefox VR with webpack</title>
+
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <style>
+    html,body{
+      margin:0;
+      padding:0;
+      overflow: hidden;
+    }
+    #info {
+      position: absolute;
+      width: 100%;
+      color: #ffffff;
+      padding: 5px;
+      /*font-family: Monospace;
+      font-size: 13px;
+      font-weight: bold;*/
+      text-align: center;
+      z-index: 1
+    }
+  </style>
+</head>
+
+<body>
+  <div id="info">
+    <b>WASD</b> move, <b>R|F</b> up|down, <b>Q|E</b> roll, <b>up|down</b> pitch, <b>left|right</b> yaw
+  </div>
+  <script>
+    (function (b, o, i, l, e, r) {
+      b.GoogleAnalyticsObject = l;
+      b[l] || (b[l] =
+        function () {
+          (b[l].q = b[l].q || []).push(arguments)
+        });
+      b[l].l = +new Date;
+      e = o.createElement(i);
+      r = o.getElementsByTagName(i)[0];
+      e.src = 'https://www.google-analytics.com/analytics.js';
+      r.parentNode.insertBefore(e, r)
+    }(window, document, 'script', 'ga'));
+    ga('create', 'UA-71806857-1');
+    ga('send', 'pageview');
+  </script>
+</body>
+</html>

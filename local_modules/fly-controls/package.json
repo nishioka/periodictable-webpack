@@ -1,0 +1,11 @@
+{
+  "name": "fly-controls",
+  "version": "1.0.0",
+  "description": "Control of airplane viewpoint.",
+  "main": "fly-controls.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Norihito Nishioka",
+  "license": "MIT"
+}
