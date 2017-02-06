@@ -1,12 +1,16 @@
 {
     # "parser": "babel-eslint",
     "env": {
+        "browser": true,
         "es6": true
     },
     "globals": {
         "window": true
     },
     "plugins": [],
+    "parserOptions": {
+        "sourceType": "module"
+    },
     "rules": {
         //Possible Errors
         "comma-dangle": 0,                                          //disallow or enforce trailing commas

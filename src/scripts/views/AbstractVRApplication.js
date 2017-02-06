@@ -1,6 +1,6 @@
 'use strict';
 
-import * as THREE from 'three'
+// import * as THREE from 'three'
 import TWEEN from 'tween.js'
 
 import 'webvr-polyfill'
@@ -61,7 +61,6 @@ class AbstractVRApplication {
   animate(timestamp) {
     // keep looping
     requestAnimationFrame(this.animate.bind(this));
-
 
     // Object update
     TWEEN.update();

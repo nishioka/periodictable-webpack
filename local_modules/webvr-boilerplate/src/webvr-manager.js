@@ -136,7 +136,7 @@ WebVRManager.prototype.getDeviceByType_ = function(type) {
     navigator.getVRDisplays().then(function(displays) {
       // Promise succeeds, but check if there are any displays actually.
       for (var i = 0; i < displays.length; i++) {
-        if (displays[i].isConnected) {
+        if (displays[i].isConnected || displays[i] instanceof type) {
           resolve(displays[i]);
           break;
         }
