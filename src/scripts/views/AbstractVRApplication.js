@@ -1,21 +1,23 @@
 'use strict';
 
-// import * as THREE from 'three'
-import TWEEN from 'tween.js'
+import * as THREE from 'three';
+import TWEEN from 'tween.js';
 
-import 'webvr-polyfill'
-import WebVRManager from 'webvr-boilerplate'
+import 'webvr-polyfill';
+import WebVRManager from 'webvr-boilerplate';
 
-// import 'VRControls'
-import 'fly-controls'
-import 'OrbitControls'
-import 'VREffect'
+// import 'VRControls';
+import 'fly-controls';
+import 'OrbitControls';
+import 'VREffect';
 
 class AbstractVRApplication {
   constructor() {
     this._scene = new THREE.Scene();
 
     this._camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10000);
+    this._camera.position.x = 200;
+    this._camera.position.y = 200;
     this._camera.position.z = 2000;
     this._scene.add(this._camera);
 
@@ -35,6 +37,9 @@ class AbstractVRApplication {
     this._manager = new WebVRManager(this._renderer, this._effect, { hideButton: false });
 
     window.addEventListener('resize', this.onWindowResize.bind(this), false);
+    window.addEventListener('keydown', this.onKey.bind(this), false);
+
+    this.addAxisGrid();
 
     this.animate();
   }
@@ -51,13 +56,6 @@ class AbstractVRApplication {
     return this._scene;
   }
 
-  onWindowResize() {
-    this._camera.aspect = window.innerWidth / window.innerHeight;
-    this._camera.updateProjectionMatrix();
-
-    this._renderer.setSize(window.innerWidth, window.innerHeight);
-  }
-
   animate(timestamp) {
     // keep looping
     requestAnimationFrame(this.animate.bind(this));
@@ -67,17 +65,37 @@ class AbstractVRApplication {
 
     // Update VR headset position and apply to camera.
     switch (this._manager.mode) {
-      case 1:
-        this._controlsOrbit.update();
-        break;
-      case 3:
-        // this._controlsVR.update();
-        break;
+    case 1:
+      this._controlsOrbit.update();
+      break;
+    case 3:
+      // this._controlsVR.update();
+      this._controlsFly.update();
+      break;
     }
-    this._controlsFly.update();
 
     // Render the scene through the VREffect.
     this._manager.render(this._scene, this._camera, timestamp);
+  }
+
+  onWindowResize() {
+    this._camera.aspect = window.innerWidth / window.innerHeight;
+    this._camera.updateProjectionMatrix();
+
+    this._renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
+  onKey(event) {
+    event.preventDefault();
+
+    if (event.keyCode === 72) { //h
+      console.log('camera.rotation: x=', this._camera.rotation.x, ', y=', this._camera.rotation.y, ', z=', this._camera.rotation.z);
+      if (this.helper) {
+        this.removeAxisGrid();
+      } else {
+        this.addAxisGrid();
+      }
+    }
   }
 }
 

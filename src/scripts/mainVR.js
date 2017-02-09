@@ -17,8 +17,21 @@ class Main extends AbstractVRApplication {
 
     this.objects = [];
 
-    this.formState = 0;
+    this.size = {
+      canvas: {
+        width: 480,
+        height: 640,
+      },
+      texture: {
+        width: 120,
+        height: 160,
+      }
+    };
 
+    this.formState = 0;
+  }
+
+  init() {
     // 変形用の配置テーブルを作成する
     this.targets = {};
     this.targets.table = this.createTableObjects(elements.length);
@@ -46,11 +59,11 @@ class Main extends AbstractVRApplication {
   createElementMesh(entity) {
     return new Promise((resolver, rejector) => {
       let canvas = document.createElement('canvas');
-      canvas.width = 120;
-      canvas.height = 160;
+      canvas.width = this.size.canvas.width;
+      canvas.height = this.size.canvas.height;
 
       let context = canvas.getContext('2d');
-      let geometry = new THREE.PlaneBufferGeometry(canvas.width, canvas.height);
+      let geometry = new THREE.PlaneBufferGeometry(this.size.texture.width, this.size.texture.height);
 
       // SVGの作成
       let svg = document.createElementNS(SVG_NS, 'svg');
@@ -81,19 +94,19 @@ class Main extends AbstractVRApplication {
 
       let number = document.createElementNS(XHTML_NS, 'div');
       number.style.position = 'absolute';
-      number.style.top = '20px';
-      number.style.right = '20px';
-      number.style.fontSize = '12px';
+      number.style.top = '10%';
+      number.style.right = '10%';
+      number.style.fontSize = `${canvas.width / 6}px`;
       number.style.color = 'rgba(127, 255, 255, 0.75)';
       number.textContent = entity.number;
       element.appendChild(number);
 
       let symbol = document.createElementNS(XHTML_NS, 'div');
       symbol.style.position = 'absolute';
-      symbol.style.top = '40px';
+      symbol.style.top = '20%';
       symbol.style.left = '0px';
       symbol.style.right = '0px';
-      symbol.style.fontSize = '60px';
+      symbol.style.fontSize = `${canvas.width / 2}px`;
       symbol.style.fontWeight = 'bold';
       symbol.style.color = 'rgba(255, 255, 255, 0.75)';
       symbol.style.textShadow = '0px 0px 10px rgba(0, 255, 255, 0.95)';
@@ -102,20 +115,20 @@ class Main extends AbstractVRApplication {
 
       let details = document.createElementNS(XHTML_NS, 'div');
       details.style.position = 'absolute';
-      details.style.top = '110px';
+      details.style.top = '65%';
       details.style.left = '0px';
       details.style.right = '0px';
-      details.style.fontSize = '12px';
+      details.style.fontSize = `${canvas.width / 6}px`;
       details.style.color = 'rgba(127, 255, 255, 0.75)';
       details.textContent = entity.details;
       element.appendChild(details);
 
       let mol = document.createElementNS(XHTML_NS, 'div');
       mol.style.position = 'absolute';
-      mol.style.bottom = '15px';
+      mol.style.top = '80%';
       mol.style.left = '0px';
       mol.style.right = '0px';
-      mol.style.fontSize = '12px';
+      mol.style.fontSize = `${canvas.width / 6}px`;
       mol.style.color = 'rgba(127, 255, 255, 0.75)';
       mol.textContent = entity.mol;
       element.appendChild(mol);
@@ -155,6 +168,25 @@ class Main extends AbstractVRApplication {
       });
       image.src = url;
     });
+  }
+
+  addAxisGrid() {
+    // xyz-axis
+    this.axis = new THREE.AxisHelper(8000);
+    this._scene.add(this.axis);
+
+    // GridHelper(X: 赤, Y:緑, Z:青)
+    this.grid = new THREE.GridHelper(8000, 40);
+    this._scene.add(this.grid);
+
+    this.helper = true;
+  }
+
+  removeAxisGrid() {
+    this._scene.remove(this.axis);
+    this._scene.remove(this.grid);
+
+    this.helper = false;
   }
 
   createTableObjects(length) {
@@ -231,17 +263,13 @@ class Main extends AbstractVRApplication {
       const object = this.objects[i];
       const target = positions[i];
 
-      if (i === 0) {
-        console.log('object.position:', object.position);
-        console.log('target.position:', target.position);
-      }
       const position = new TWEEN.Tween(object.position);
       position.to({
         x: target.position.x,
         y: target.position.y,
         z: target.position.z
       }, Math.random() * duration + duration)
-      .delay(1000)
+      .delay(2000)
       .easing(TWEEN.Easing.Exponential.InOut)
       .start();
 
@@ -251,7 +279,7 @@ class Main extends AbstractVRApplication {
         y: target.rotation.y,
         z: target.rotation.z
       }, Math.random() * duration + duration)
-      .delay(1000)
+      .delay(2000)
       .easing(TWEEN.Easing.Exponential.InOut)
       .start();
     }

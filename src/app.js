@@ -1,5 +1,6 @@
 'use strict';
 
-import Main from 'scripts/mainVR'
+import Main from 'scripts/mainVR';
 
-new Main();
+const main = new Main();
+main.init();
